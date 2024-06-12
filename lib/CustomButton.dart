@@ -1,15 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final Widget widget;
   final String title;
   final Color bgcolor, titlecolor;
+  final VoidCallback onPressed;
+   
   const CustomButton(
       {super.key,
-      required this.widget,
       required this.title,
       required this.bgcolor,
-      required this.titlecolor});
+      required this.titlecolor,
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +21,7 @@ class CustomButton extends StatelessWidget {
       child: SizedBox(
         width: 300,
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => widget),
-            );
-          },
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(15),
             backgroundColor: bgcolor,

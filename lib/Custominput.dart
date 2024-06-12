@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sign_up_login/ColorPalete.dart';
 
 class CInput extends StatelessWidget {
@@ -6,32 +7,39 @@ class CInput extends StatelessWidget {
   final String hintText;
   final IconData? prefixIcon;
   final bool obscureText;
+  final TextEditingController myController;
+  final String? Function(String?) validator;
 
   const CInput(
       {super.key,
       required this.name,
       required this.hintText,
       this.prefixIcon,
-      required this.obscureText});
+      required this.obscureText,
+      required this.myController,
+      required this.validator});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-            child: Text(
-              name,
-              style: TextStyle(color: ColorPalete().color2, fontSize: 10),
-            ),
+          Text(
+            name,
+            style: TextStyle(
+                color: ColorPalete().color1,
+                fontSize: 17,
+                fontWeight: FontWeight.w500),
           ),
-          TextFormField(
-            obscureText: obscureText,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
+        ],
+      ),
+      Container(
+        margin: EdgeInsets.only(bottom: 20, top: 20),
+        height: 30,
+        child: TextFormField(
+          decoration: InputDecoration(
+              // Add padding inside
               border: InputBorder.none,
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
@@ -42,10 +50,17 @@ class CInput extends StatelessWidget {
               hintText: hintText,
               hintStyle: TextStyle(color: Colors.grey),
               prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-            ),
-          )
-        ],
-      ),
-    );
+              focusedErrorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2.0),
+              ),
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2.0),
+              )),
+          validator: validator,
+          controller: myController,
+          obscureText: obscureText,
+        ),
+      )
+    ]);
   }
 }
